@@ -1,14 +1,53 @@
-# Project
+# Microsoft Vision
 
-> This repo has been populated by an initial template to help get you started. Please
-> make sure to update the content to build a great experience for community-building.
+## Installation
+``pip install microsoftvision``
 
-As the maintainer of this project, please make a few updates:
 
-- Improving this README.MD file to provide a great experience
-- Updating SUPPORT.MD with content about this project's support experience
-- Understanding the security reporting process in SECURITY.MD
-- Remove this section from the README
+## Usage
+Input images should be in <b>BGR</b> format of shape (3 x H x W), where H and W are expected to be at least 224.
+The images have to be loaded in to a range of [0, 1] and then normalized using mean = [0.485, 0.456, 0.406] and std = [0.229, 0.224, 0.225].
+
+Example script:  
+```
+import microsoftvision
+import torch
+
+# This will load pretrained model
+model = microsoftvision.models.resnet50(pretrained=True)
+
+# Load model to CPU memory, interface is the same as torchvision
+model = microsoftvision.models.resnet50(pretrained=True, map_location=torch.device('cpu')) 
+```
+
+Example of creating image embeddings:
+```
+import microsoftvision
+from torchvision import transforms
+import torch
+from PIL import Image
+
+def get_image():
+    img = cv2.imread('example.jpg', cv2.IMREAD_COLOR)
+    img = cv2.resize(img, (256, 256))
+    img = img[16:256-16, 16:256-16]
+    preprocess = transforms.Compose([
+        transforms.ToTensor(),
+        transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
+    ])
+    return preprocess(image).unsqueeze(0) # Unsqueeze only required when there's 1 image in images batch
+
+model = microsoftvision.models.resnet50(pretrained=True)
+features = model(get_image())
+print(features.shape)
+```
+Should output
+```
+...
+torch.Size([1, 2048])
+```
+
+
 
 ## Contributing
 
