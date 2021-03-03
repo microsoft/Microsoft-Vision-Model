@@ -1,3 +1,4 @@
+# Project
 # Microsoft Vision
 
 ## Installation
@@ -29,9 +30,10 @@ from PIL import Image
 
 def get_image():
     img = cv2.imread('example.jpg', cv2.IMREAD_COLOR)
-    img = cv2.resize(img, (256, 256))
-    img = img[16:256-16, 16:256-16]
     preprocess = transforms.Compose([
+        transforms.ToPILImage(),
+        transforms.Resize(224),
+        transforms.CenterCrop(224),
         transforms.ToTensor(),
         transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
     ])
