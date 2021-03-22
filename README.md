@@ -37,7 +37,7 @@ def get_image():
         transforms.ToTensor(),
         transforms.Normalize(mean=[0.485, 0.456, 0.406], std=[0.229, 0.224, 0.225]),
     ])
-    return preprocess(image).unsqueeze(0) # Unsqueeze only required when there's 1 image in images batch
+    return preprocess(img).unsqueeze(0) # Unsqueeze only required when there's 1 image in images batch
 
 model = microsoftvision.models.resnet50(pretrained=True)
 features = model(get_image())
