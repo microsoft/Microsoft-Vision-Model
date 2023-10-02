@@ -125,7 +125,7 @@ def main():
                 if phase == 'val' and epoch_acc > best_acc:
                     best_acc = epoch_acc
                     best_model_wts = copy.deepcopy(model.state_dict())
-                    torch.save(model.state_dict(), 'TorchStateTrainMsft.pth')
+                    torch.save(model.module.state_dict(), 'TorchStateTrainMsft.pth')
 
                     with open('bestaccuracy.txt', 'w') as file:
                         # Write the double to the file
@@ -173,7 +173,6 @@ def main():
     model_conv = train_model(model_conv, criterion, optimizer_conv,
                             exp_lr_scheduler, num_epochs=67)
 
-    #torch.save(model_conv.state_dict(), 'D:/Temp/TorchStateFinal.pth')
     # Plot training and validation loss
     graph_train_losses = torch.tensor(train_losses, device='cpu')
     graph_val_losses = torch.tensor(val_losses, device='cpu')
